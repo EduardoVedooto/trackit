@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const InputWrapper = styled.form`
+const Form = styled.form`
     width: 90%;
 
     input {
@@ -9,7 +9,7 @@ const InputWrapper = styled.form`
         border-radius: 5px;
         border: 1px solid #d5d5d5;
         background-color: #FFF;
-        color: #666666;
+        color: ${props => props.waitingServer ? "#bbbbbb" : "#666666"};
         height: 45px;
         outline: none;
         padding-left: 10px;
@@ -17,18 +17,10 @@ const InputWrapper = styled.form`
         ::placeholder{
             color: #DBDBDB;
         }
-    }
-    button{
-        width: 100%;
-        margin-top: 2.5px;
-        border-radius: 5px;
-        height: 45px;
-        border: none;
-        cursor: pointer;
-        background-color: #52B6FF;
-        color: #FFF;
-        font-size: 20px;
+        :focus{
+            box-shadow: 0 0 10px 1px rgba(82,182,255,.3);
+        }
     }
 `;
 
-export default InputWrapper;
+export default Form;

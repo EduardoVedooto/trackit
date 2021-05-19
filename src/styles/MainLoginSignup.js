@@ -13,7 +13,15 @@ const Main = styled.main`
         color: #52B6FF;
         text-decoration: underline;
         font-size: 14px;
+        visibility: ${props => !props.isLoading ? "default" : "hidden"}
     }
+
+    div {
+        color: red;
+        margin: 10px 0;
+    }
+
+    
 `;
 
 export default Main;
