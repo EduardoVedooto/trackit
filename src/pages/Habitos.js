@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Header from "../components/Header";
 import UserContext from "../contexts/UserContext";
 import styled from "styled-components";
+import Footer from "../components/Footer";
 
 
 const Habitos = () => {
@@ -11,6 +12,7 @@ const Habitos = () => {
         <HabitosContainer>
             <Header />
             <h1>OLÁ MUNDO!</h1>
+            <Footer />
         </HabitosContainer>
     );
 }
