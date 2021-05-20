@@ -6,8 +6,8 @@ import 'react-circular-progressbar/dist/styles.css';
 const Footer = () => {
     return(
         <FooterContainer>
-            <Link to="#">Hábitos</Link>
-            <Link to="#">
+            <Link to="/habitos">Hábitos</Link>
+            <Link to="/hoje">
                 <CircularProgressbar
                     value="68"
                     text="Hoje"
@@ -21,7 +21,7 @@ const Footer = () => {
                     })}
                 />
             </Link>
-            <Link to="#">Histórico</Link>
+            <Link to="/historico">Histórico</Link>
         </FooterContainer>
     );
 }
@@ -46,6 +46,8 @@ const FooterContainer = styled.footer`
         width: 91px;
         height: 91px;
         margin-bottom: 45px;
+        box-shadow: 0 0 10px rgba(0,0,0,.4);
+        border-radius: 50%;
     }
 `;
 

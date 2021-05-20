@@ -3,8 +3,8 @@ import { useState } from "react";
 import GlobalStyle from "./styles/globalStyles";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Habitos from "./pages/Habitos";
 import UserContext from "./contexts/UserContext";
+import Authenticated from "./routes/Authenticated";
 
 const App = () => {
   const [profile, setProfile] = useState(null);
@@ -17,7 +17,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/cadastro" exact component={Signup} />
-          <Route path="/habitos" exact component={Habitos} />
+          <Route component={Authenticated} />
         </Switch>
       </BrowserRouter>
       

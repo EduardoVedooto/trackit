@@ -3,12 +3,11 @@ import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 
 const Header = () => {
-    const img = useContext(UserContext).profile.image;
-    console.log(img);
+    const { image, name } = useContext(UserContext).profile;
     return(
         <HeaderComponent>
             <h1>TrackIt</h1>
-            <img src={img} />
+            <img src={image} title={name} alt={`Imagem do perfil de ${name}`}/>
         </HeaderComponent>
     );
 }
@@ -24,6 +23,7 @@ const HeaderComponent = styled.header`
     justify-content: space-between;
     align-items: center;
     padding: 0 15px;
+    box-shadow: 0 4px 4px rgba(0,0,0,.15);
 
     h1 {
         color: #fff;
