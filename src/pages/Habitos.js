@@ -66,7 +66,8 @@ const Habitos = () => {
  
 const HabitosContainer = styled.main`
     padding: 70px 20px 110px 20px;
-    height: 100%; //LEMBRAR DE ARRUMAR AQUI DEPOIS
+    height: 100%;
+    min-height: 100vh;
     background-color: #E5E5E5;
 
     div#title {
