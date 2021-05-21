@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BiTrash } from "react-icons/bi";
 import axios from "axios";
 
-const HabitComponent = ({token, title, days, id, updateHabits}) => {
+const HabitComponent = ({updateProgressBar, token, title, days, id, updateHabits}) => {
     const weekdays = ['D','S','T','Q','Q','S','S'];
 
     function handleDelete() {
         if(window.confirm("Deseja deletar o hábito")){
+            updateProgressBar();
             const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`

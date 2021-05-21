@@ -55,7 +55,7 @@ const Habitos = () => {
             <NewHabit displayForm={{newHabit, setNewHabit}} token={profile.token} updateProgressBar={updateProgressBar} updateHabits={setHabitsList}/>
             {habitsList.length ? 
                 habitsList.map( habit => 
-                    <HabitComponent updateHabits={setHabitsList} id={habit.id} token={profile.token} key={habit.id} title={habit.name} days={habit.days}/>
+                    <HabitComponent updateProgressBar={updateProgressBar} updateHabits={setHabitsList} id={habit.id} token={profile.token} key={habit.id} title={habit.name} days={habit.days}/>
                 ).reverse()
             :
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>

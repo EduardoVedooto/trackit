@@ -24,10 +24,11 @@ const Hoje = () => {
         });
         promisse.then(({data}) => {
             SetWaitingServer(false);
+            setProgress(CalculatePercentage(data));
             setHabits(data);
         });
         promisse.catch(({data}) => console.log(data));
-    }, [profile.token]);
+    }, [profile.token]); //eslint-disable-line
 
     function handleSelection(id, done){
         const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/${done ? "uncheck" : "check"}`, id, {
