@@ -12,15 +12,16 @@ const Signup = () => {
     const history = useHistory();
     const emailValidation = /\S+@\S+\.\S+/; // eslint-disable-line
     const URLValidation = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/; // eslint-disable-line
-    const [activateButton, setActivateButton] = useState(false);
-    const [waitingServer, setWaitingServer] = useState(false);
-    const [newUser, setNewUser] = useState({
+    const [activateButton, setActivateButton] = useState(false); // Boolean controlador do botão
+    const [waitingServer, setWaitingServer] = useState(false); // Boolean controlador do loading do botão
+    const [errorMessage, setErrorMessage] = useState(""); // Mensagem de erro caso o usuário digite algum campo errado
+    const [newUser, setNewUser] = useState({ // Requisição enviada para o servidor
         email: "",
         name: "",
         image: "",
         password: ""
     });
-
+    
     function handleChange(e) {
         const { name, value } = e.target;
         if(name === "email" ){
@@ -68,12 +69,20 @@ const Signup = () => {
             setWaitingServer(false);
             setActivateButton(true);
         });
-        promisse.catch(e => console.log(e));
+        promisse.catch(error => {
+            setWaitingServer(false);
+            if(error.response.status === 422) {
+                setErrorMessage("Email digitado inválido");
+            } else {
+                setErrorMessage(error.response.data.message);
+            }
+        });
     }
 
     return(
         <Main isLoading={waitingServer}>
             <img src={logo} alt="Logo Trackit"/>
+            <div><h2>{errorMessage}</h2></div>
             <Form onSubmit={handleSubmit} isButtonActive={activateButton} waitingServer={waitingServer}>
                 <input
                     name="email"

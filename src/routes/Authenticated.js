@@ -12,13 +12,12 @@ const Authenticated = () => {
     return(
         <ProgressContext.Provider value={{progress, setProgress}}>  
             <Header />
-            <Footer />
             <Switch>
                 <Route path="/habitos" exact component={Habitos} />
                 <Route path="/historico" exact component={Historico} />
                 <Route path="/hoje" exact component={Hoje} />
             </Switch>
-            
+            <Footer />
         </ProgressContext.Provider>
     );
 }

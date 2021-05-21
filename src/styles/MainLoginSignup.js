@@ -16,9 +16,10 @@ const Main = styled.main`
         visibility: ${props => !props.isLoading ? "default" : "hidden"}
     }
 
-    div {
-        color: red;
+    & > div {
+        color: #e75766;
         margin: 10px 0;
+        height: 16px;
     }
 
     

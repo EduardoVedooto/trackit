@@ -23,7 +23,7 @@ const Habitos = () => {
             SetWaitingServer(false);
             setHabitsList(data);
         });
-        promisse.catch( response => console.log(response.data));
+        promisse.catch( error => window.alert(error.response.data.message));
     }, [profile.token]);    
 
     function handleNewHabit() {
@@ -51,7 +51,7 @@ const Habitos = () => {
 }
  
 const HabitosContainer = styled.main`
-    padding: 70px 20px;
+    padding: 70px 20px 110px 20px;
     height: 100%; //LEMBRAR DE ARRUMAR AQUI DEPOIS
     background-color: #E5E5E5;
 

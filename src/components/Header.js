@@ -24,6 +24,7 @@ const HeaderComponent = styled.header`
     align-items: center;
     padding: 0 15px;
     box-shadow: 0 4px 4px rgba(0,0,0,.15);
+    z-index: 10;
 
     h1 {
         color: #fff;

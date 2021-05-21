@@ -1,12 +1,16 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
+import ProgressContext from "../contexts/ProgressContext";
 import Button from "../styles/Button";
+import CalculatePercentage from "../utils/CalculatePercentage";
 
 const NewHabit = (props) => {
     const weekdays = ['D','S','T','Q','Q','S','S'];
     const {newHabit, setNewHabit} = props.displayForm;
+    const {setProgress} = useContext(ProgressContext);
+    const [updatedList, setUpdatedList] = useState([]);
     const [status, setStatus] = useState({
         isActive: false,
         isLoading: false
@@ -22,6 +26,7 @@ const NewHabit = (props) => {
 
     function handleChange(e) {
         request.name = e.target.value;
+        console.log(e.target);
         setRequest({...request});
         inputVerification();
     }
@@ -41,10 +46,6 @@ const NewHabit = (props) => {
         e.preventDefault();
         status.isLoading = true;
         setStatus({...status});
-        setTimeout(() => {
-            status.isLoading = false;
-            setStatus({...status});
-        }, 2000);
         const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", request, {
             headers: {
                 Authorization: `Bearer ${props.token}`
@@ -55,25 +56,22 @@ const NewHabit = (props) => {
             request.name = "";
             request.days = [];
             status.isLoading = false;
+            status.isActive = false;
             setRequest({...request});
             setStatus({...status});
-            const update = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
-                headers: {
-                    Authorization: `Bearer ${props.token}`
-                }
-            });
-            update.then(({data}) => props.updateHabits(data));
-            update.catch(({data}) => console.log(data));
+            updateHabitsList()
+            updateProgressBar();
         });
-        promisse.catch( ({data}) => {
+        promisse.catch( error => {
             status.isLoading = false;
+            status.isActive = false;
             setStatus({...status});
-            window.alert(data.message);
+            console.log(error.response.data.message);
         });
     }
 
     function inputVerification() {
-        if(request.name.length >= 3 && request.days.length) {
+        if(request.name.length && request.days.length) {
             status.isActive = true;
             setStatus({...status});
         } else {
@@ -81,16 +79,37 @@ const NewHabit = (props) => {
             setStatus({...status});
         }
     }
+
+    function updateHabitsList() {
+        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
+            headers: {
+                Authorization: `Bearer ${props.token}`
+            }
+        });
+        promisse.then(({data}) => props.updateHabits(data));
+        promisse.catch(error => window.alert(error.response.data.message));
+    }
+
+    function updateProgressBar() { 
+        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+            headers: {
+                Authorization: `Bearer ${props.token}`
+            }
+        });
+        promisse.then(({data}) => setProgress(CalculatePercentage(data)));
+        promisse.catch(error => window.alert(error.response.data.message));
+    }
+
     return(
         <NewHabitContainer isLoading={status.isLoading} displayForm={newHabit} onSubmit={handleSubmit}>
-            <input disabled={status.isLoading} id="titulo" placeholder="Nome do hábito" value={request.name} onChange={handleChange}/>
+            <input disabled={status.isLoading} id="titulo" placeholder="Nome do hábito" value={request.name} onChange={handleChange} required/>
             <ol>
                 {weekdays.map( (weekday, index) => {
                     return(
                         <li key={index}>
                             <CheckBox className={request.days.includes(index)} isChecked={request.days.includes(index) ? true : false}>
                                 {weekday}
-                                <input disabled={status.isLoading} type="checkbox" value={index} onChange={handleCheck}/>
+                                <input required={request.days.length ? false : true} disabled={status.isLoading} type="checkbox" value={index} onChange={handleCheck}/>
                             </CheckBox>
                         </li>
                     )

@@ -12,15 +12,13 @@ const Login = () => {
     const history = useHistory();
     const { setProfile } = useContext(UserContext);
     const emailValidation = /\S+@\S+\.\S+/; // eslint-disable-line
-    const [activateButton, setActivateButton] = useState(false);
-    const [waitingServer, setWaitingServer] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [user, setUser] = useState({
+    const [activateButton, setActivateButton] = useState(false); // Boolean que ativa/desativa o button
+    const [waitingServer, setWaitingServer] = useState(false); // Boolean que ativa/desativa o loading do button
+    const [errorMessage, setErrorMessage] = useState(""); // Mensagem de erro caso o usuário digite algum campo errado
+    const [user, setUser] = useState({ // Objeto utilizado para requisição do servidor
         email: "",
         password: ""
     });
-
-
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -35,7 +33,7 @@ const Login = () => {
     }
 
     function validate() {
-        if( user.email && emailValidation.test(user.email) && user.password.length >= 6) {
+        if( user.email && emailValidation.test(user.email) && user.password.length >= 6 ) {
             setActivateButton(true);
         } else {
             setActivateButton(false);
@@ -52,8 +50,17 @@ const Login = () => {
         });
         promisse.catch( error => {
             setWaitingServer(false);
-            setErrorMessage(error.response.data.message);
+            if(error.response.status === 422) {
+                setErrorMessage("Email digitado inválido");
+            } else {
+                setErrorMessage(error.response.data.message);
+            }
+            
         });
+    }
+
+    function handleFocus() {
+        setErrorMessage("");
     }
 
     return(
@@ -67,6 +74,7 @@ const Login = () => {
                     placeholder="E-mail"
                     value={user.email}
                     onChange={handleChange}
+                    onFocus={handleFocus}
                     disabled={waitingServer}
                     required
                 />
