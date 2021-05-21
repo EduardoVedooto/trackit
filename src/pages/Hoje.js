@@ -76,6 +76,7 @@ const Hoje = () => {
 const HojeContainer = styled.main`
     background-color: #E5E5E5;
     height: 100%;
+    min-height: 100vh;
     padding: 70px 15px 110px 15px;
 `;
 
