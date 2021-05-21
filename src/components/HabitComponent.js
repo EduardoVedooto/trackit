@@ -3,8 +3,7 @@ import { BiTrash } from "react-icons/bi";
 import axios from "axios";
 
 const HabitComponent = ({token, title, days, id, updateHabits}) => {
-    const weekdays = ['D','S','T','Q','Q','S','S']; 
-    console.log(id);
+    const weekdays = ['D','S','T','Q','Q','S','S'];
 
     function handleDelete() {
         if(window.confirm("Deseja deletar o hábito")){

@@ -24,16 +24,14 @@ const Habitos = () => {
             setHabitsList(data);
         });
         promisse.catch( response => console.log(response.data));
-    }, []);    
+    }, [profile.token]);    
 
     function handleNewHabit() {
-        return newHabit ? null : setNewHabit(true);
+        return newHabit ? null : setNewHabit(true); // Faz a <div> de criação de hábitos aparecer. Se ela já estiver aberta, não faz nada
     }
 
-    if(waitingServer) {
-        return(<Loading />);
-    }
-
+    if(waitingServer) return <Loading />;
+    
     return(
         <HabitosContainer>
             <div id="title">
@@ -44,7 +42,7 @@ const Habitos = () => {
             {habitsList.length ? 
                 habitsList.map( habit => 
                     <HabitComponent updateHabits={setHabitsList} id={habit.id} token={profile.token} key={habit.id} title={habit.name} days={habit.days}/>
-                )
+                ).reverse()
             :
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
             }
@@ -54,7 +52,7 @@ const Habitos = () => {
  
 const HabitosContainer = styled.main`
     padding: 70px 20px;
-    height: 100vh; //LEMBRAR DE ARRUMAR AQUI DEPOIS
+    height: 100%; //LEMBRAR DE ARRUMAR AQUI DEPOIS
     background-color: #E5E5E5;
 
     div#title {
