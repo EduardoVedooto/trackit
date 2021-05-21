@@ -22,7 +22,6 @@ const NewHabit = (props) => {
 
     function handleChange(e) {
         request.name = e.target.value;
-        console.log(e.target);
         setRequest({...request});
         inputVerification();
     }
