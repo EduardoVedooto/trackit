@@ -6,14 +6,18 @@ import NewHabit from "../components/NewHabit";
 import HabitComponent from "../components/HabitComponent";
 import axios from "axios";
 import Loading from "../components/Loading";
+import ProgressContext from "../contexts/ProgressContext";
+import CalculatePercentage from "../utils/CalculatePercentage";
 
 const Habitos = () => {
+    const { setProgress } = useContext(ProgressContext);
     const { profile } = useContext(UserContext);
     const [newHabit, setNewHabit] = useState(false);
     const [habitsList, setHabitsList] = useState([]);
     const [waitingServer, SetWaitingServer] = useState(true);
 
     useEffect(() => {
+        updateProgressBar();
         const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
             headers: {
                 Authorization: `Bearer ${profile.token}`
@@ -24,7 +28,17 @@ const Habitos = () => {
             setHabitsList(data);
         });
         promisse.catch( error => window.alert(error.response.data.message));
-    }, [profile.token]);    
+    }, [profile.token]); //eslint-disable-line
+ 
+    function updateProgressBar() { 
+        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+            headers: {
+                Authorization: `Bearer ${profile.token}`
+            }
+        });
+        promisse.then(({data}) => setProgress(CalculatePercentage(data)));
+        promisse.catch(error => window.alert(error.response.data.message));
+    }
 
     function handleNewHabit() {
         return newHabit ? null : setNewHabit(true); // Faz a <div> de criação de hábitos aparecer. Se ela já estiver aberta, não faz nada
@@ -38,7 +52,7 @@ const Habitos = () => {
                 <h2>Meus hábitos</h2>
                 <BsFillPlusSquareFill onClick={handleNewHabit}/>
             </div>
-            <NewHabit displayForm={{newHabit, setNewHabit}} token={profile.token} updateHabits={setHabitsList}/>
+            <NewHabit displayForm={{newHabit, setNewHabit}} token={profile.token} updateProgressBar={updateProgressBar} updateHabits={setHabitsList}/>
             {habitsList.length ? 
                 habitsList.map( habit => 
                     <HabitComponent updateHabits={setHabitsList} id={habit.id} token={profile.token} key={habit.id} title={habit.name} days={habit.days}/>

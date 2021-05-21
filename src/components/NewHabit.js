@@ -1,16 +1,12 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
-import ProgressContext from "../contexts/ProgressContext";
 import Button from "../styles/Button";
-import CalculatePercentage from "../utils/CalculatePercentage";
 
 const NewHabit = (props) => {
     const weekdays = ['D','S','T','Q','Q','S','S'];
     const {newHabit, setNewHabit} = props.displayForm;
-    const {setProgress} = useContext(ProgressContext);
-    const [updatedList, setUpdatedList] = useState([]);
     const [status, setStatus] = useState({
         isActive: false,
         isLoading: false
@@ -60,7 +56,7 @@ const NewHabit = (props) => {
             setRequest({...request});
             setStatus({...status});
             updateHabitsList()
-            updateProgressBar();
+            props.updateProgressBar();
         });
         promisse.catch( error => {
             status.isLoading = false;
@@ -90,15 +86,7 @@ const NewHabit = (props) => {
         promisse.catch(error => window.alert(error.response.data.message));
     }
 
-    function updateProgressBar() { 
-        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
-            headers: {
-                Authorization: `Bearer ${props.token}`
-            }
-        });
-        promisse.then(({data}) => setProgress(CalculatePercentage(data)));
-        promisse.catch(error => window.alert(error.response.data.message));
-    }
+    
 
     return(
         <NewHabitContainer isLoading={status.isLoading} displayForm={newHabit} onSubmit={handleSubmit}>
